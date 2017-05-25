@@ -1,0 +1,8 @@
+#Production Environment
+
+#Spring DataSource details
+spring.datasource.initialize=true
+spring.datasource.driverClass=org.postgresql.Driver
+spring.datasource.jdbcUrl=jdbc:postgresql://localhost::5433/practicedb?useSSL=false&autoReconnect=true&createDatabaseIfNotExist=true
+spring.datasource.username=postgres
+spring.datasource.password=nisum

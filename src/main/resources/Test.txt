@@ -1,0 +1,61 @@
+select
+RowCurr.loc_nbr,
+RowCurr.regr_nbr,
+RowPrev.proc_strt_txn_dttm currentTxnStartDT,
+RowPrev.proc_txn_seq_id currentTxnSeqNum,
+RowCurr.proc_txn_seq_id nextTxnSeqNum,
+RowCurr.proc_strt_txn_dttm nextTxnStartDT
+from
+    (
+        select
+        ROW_NUMBER() OVER() rnum_Curr,
+        *
+        From
+        (
+            select
+            loc_nbr,
+            regr_nbr,
+            proc_strt_txn_dttm,
+            proc_txn_seq_id,
+            CAST(proc_txn_seq_id AS INTEGER) num_seq_id_curr
+            from txppg_txn_payld_proc_t
+            where
+            to_char(proc_strt_txn_dttm, 'YYYY-MM-DD') Between #{startDate} And #{endDate} and
+            txn_payld_typ_cd = 'SLSTXN' and
+            regr_nbr != '999'
+            order by loc_nbr, regr_nbr, proc_strt_txn_dttm, proc_txn_seq_id
+        )
+        BaseCurr
+    )
+    RowCurr
+    Left Join
+    (
+        select
+        ROW_NUMBER() OVER() rnum_Prev,
+        *
+        From
+        (
+            select
+            loc_nbr,
+            regr_nbr,
+            proc_strt_txn_dttm,
+            proc_txn_seq_id,
+            CAST(proc_txn_seq_id AS INTEGER) num_seq_id_prev
+            from txppg_txn_payld_proc_t
+            where
+            to_char(proc_strt_txn_dttm, 'YYYY-MM-DD') Between #{startDate} And #{endDate} and
+            txn_payld_typ_cd = 'SLSTXN' and
+            regr_nbr != '999'
+            order by loc_nbr, regr_nbr, proc_strt_txn_dttm, proc_txn_seq_id
+        )
+        BasePrev
+    )
+    RowPrev on
+RowCurr.loc_nbr = RowPrev.loc_nbr and
+RowCurr.regr_nbr = RowPrev.regr_nbr and
+RowCurr.rnum_Curr = RowPrev.rnum_Prev + 1
+where
+RowPrev.proc_txn_seq_id Is Not Null
+and RowCurr.num_seq_id_curr - RowPrev.num_seq_id_prev != 1
+and Not (RowCurr.num_seq_id_curr - RowPrev.num_seq_id_prev = 0)
+and Not (RowCurr.num_seq_id_curr = 1 and RowPrev.num_seq_id_prev = 9999);

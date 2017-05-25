@@ -1,0 +1,236 @@
+/* Cascading Style Sheet */
+#header {
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    display: block;
+    color: aliceblue;
+    background: rgba(252, 93, 23, 0.99);
+    box-shadow: 1px 1px 1px 1px grey;
+}
+
+#header h1 {
+    font-size: 25px;
+    margin: 0 auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#header img {
+    position: fixed;
+    display: block;
+    float: left;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px grey;
+    cursor: pointer;
+}
+
+h2 {
+    font: bold 20px "Trebuchet MS";
+    margin: 10px auto;
+}
+
+h3 {
+    font: bold 18px "Trebuchet MS";
+    margin: 10px auto;
+    color: #003eff;
+}
+
+h4 {
+    font: bold 16px "Trebuchet MS";
+    margin: 10px auto;
+    color: #BD3E31;
+}
+
+#main {
+    display: block;
+    float: left;
+    font-family: "Trebuchet MS";
+    position: relative;
+    height: auto;
+    overflow: scroll;
+    min-height: 580px;
+    width: 100%;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 1px 1px grey;
+}
+
+#main span {
+    padding: 100px;
+}
+
+body {
+    font-family: "Trebuchet MS";
+}
+
+.animate {
+    transition: all 0.1s;
+    -webkit-transition: all 0.1s;
+}
+
+.button {
+    position: relative;
+    width: auto;
+    padding: 5px 20px;
+    min-width: 160px;
+    max-width: 180px;
+    text-align: center;
+    color: #FFF;
+    float: none;
+    border-radius: 10px;
+    text-decoration: none;
+    font: normal 1em 'Oswald', Helvetica;
+    display: block;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.button:active {
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset;
+    top: 4px;
+    border-bottom: 4px solid #2980B9;
+}
+
+.blue {
+    background-color: #3498DB;
+    border-bottom: 5px solid #2980B9;
+    text-shadow: 0px -2px #2980B9;
+}
+
+.red {
+    background-color: #E74C3C;
+    border-bottom: 5px solid #BD3E31;
+    text-shadow: 0px -2px #BD3E31;
+}
+
+.green {
+    background-color: #82BF56;
+    border-bottom: 5px solid #669644;
+    text-shadow: 0px -2px #669644;
+}
+
+.violet {
+    background-color: #7C78D4;
+    border-bottom: 5px solid #3E3E85;
+    text-shadow: 0px -2px #3E3E85;
+}
+
+.push_button {
+    display: block;
+    position: relative;
+    padding: 5px;
+    margin: 0 auto;
+    width: auto;
+    min-width: 20px;
+    max-width: 45px;
+    text-align: center;
+    color: #FFF;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: 'Oswald', Helvetica;
+}
+
+.push_button:active {
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset, 0 -1px 0 rgba(255, 255, 255, .1) inset;
+    top: 2px;
+    border-bottom: 3px solid #669644;
+}
+
+#loginBean, #student {
+    margin-top: 50px;
+}
+
+#studentTable {
+    width: 95%;
+    height: auto;
+    padding: 5px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 0px 1px rgba(2, 0, 19, 0.69);
+}
+
+#studentTable tr {
+    height: 35px;
+}
+
+#studentTable th {
+    width: 50%;
+    min-height: 35px;
+    padding-left: 8px;
+    background: rgba(220, 194, 218, 0.56);
+}
+
+#studentTable td {
+    padding-left: 8px;
+}
+
+#loginBean input[type='text'], #student input[type='text'] {
+    position: relative;
+    padding: 0px 20px;
+    margin: 0 auto;
+    float: none;
+    border-radius: 15px;
+    font-size: 18px;
+    font-family: 'Pacifico', cursive;
+    color: #000;
+    text-decoration: none;
+}
+
+/* Outer */
+.popup {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1;
+}
+
+/* Inner */
+.popup-inner {
+    max-width: 700px;
+    width: 90%;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+    border-radius: 3px;
+    background: #fff;
+}
+
+/* Close Button */
+.popup-close {
+    width: 30px;
+    height: 30px;
+    /*padding-top:4px;*/
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    transition: ease 0.25s all;
+    -webkit-transform: translate(50%, -50%);
+    transform: translate(50%, -50%);
+    border-radius: 1000px;
+    background: rgba(0, 0, 0, 0.8);
+    font-family: Arial, Sans-Serif;
+    font-size: 20px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 100%;
+    color: #fff;
+}
+
+.popup-close:hover {
+    -webkit-transform: translate(50%, -50%) rotate(180deg);
+    transform: translate(50%, -50%) rotate(180deg);
+    background: rgba(0, 0, 0, 1);
+    text-decoration: none;
+    cursor: pointer;
+}

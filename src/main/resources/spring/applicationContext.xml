@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/cache"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <mvc:annotation-driven/>
+
+    <context:component-scan base-package="com.practice"/>
+
+    <!-- step 1 ComboPooledDataSource Configuration -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true">
+        <!-- DataSource Properties -->
+        <property name="driverClass" value="${spring.datasource.driverClass}"/>
+        <property name="jdbcUrl" value="${spring.datasource.jdbcUrl}"/>
+        <property name="user" value="${spring.datasource.username}"/>
+        <property name="password" value="${spring.datasource.password}"/>
+
+        <!-- C3P0 properties -->
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}"/>
+        <property name="minPoolSize" value="${jdbc.minPoolSize}"/>
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+        <property name="checkoutTimeout" value="${jdbc.checkoutTimeout}"/>
+        <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}"/>
+        <property name="maxIdleTime" value="${jdbc.maxIdleTime}"/>
+        <property name="maxStatementsPerConnection" value="${jdbc.maxStatementsPerConnection}"/>
+        <property name="maxStatements" value="${jdbc.maxStatements}"/>
+        <property name="testConnectionOnCheckin" value="${jdbc.testConnectionOnCheckin}"/>
+        <property name="testConnectionOnCheckout" value="${jdbc.testConnectionOnCheckout}"/>
+        <property name="acquireRetryAttempts" value="${jdbc.acquireRetryAttempts}"/>
+        <property name="maxConnectionAge" value="${jdbc.maxConnectionAge}"/>
+        <property name="debugUnreturnedConnectionStackTraces"
+                  value="${jdbc.debugUnreturnedConnectionStackTraces}"/>
+        <property name="preferredTestQuery" value="SELECT 1"/>
+    </bean>
+
+    <!-- step 2 SqlSessionFactory Configuration -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:configLocation="${mybatis.configLocation}"
+          p:typeAliasesPackage="${sqlSessionFactory.typeAliasesPackage}"
+          p:mapperLocations="${mybatis.mapperLocations}"
+          p:dataSource-ref="dataSource"/>
+
+    <!-- step 3 SqlSession Configuration -->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- step 4 StudentMapper Configuration -->
+    <bean id="studentMapper" class="com.practice.mapper.StudentMapperImpl"
+          p:sqlSession-ref="sqlSession"/>
+
+    <!--step 3 mapper-->
+    <bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean" abstract="true" lazy-init="true"
+          p:sqlSessionFactory-ref="sqlSessionFactory"/>
+
+    <bean id="oneMapper" parent="baseMapper" p:mapperInterface="com.practice.mapper.StudentMapper"/>
+
+    <!--Declare a transaction manager-->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- Enable annotation style of managing transactions -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+    <!--<property name="basePackage" value="classpath*:com/practice/mapper/StudentMapper" />-->
+    <!--</bean>-->
+
+</beans>
